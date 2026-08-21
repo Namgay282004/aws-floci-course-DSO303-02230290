@@ -71,7 +71,7 @@ With the environment ready, the IAM foundation was built: three groups (`usms-ad
     Run aws configure `list --profile floci`. Identify which column tells you where each value came from, and explain why the Type for the access key says shared-credentials-file.
     ![](../../screenshots/lab-01/activity-1.png)
 
-    The output has four columns; `Name, Value, Type, Location`. The Location column is the one that answers "where did this come from"; for the access key and secret it will say something like `~/.aws/credentials`, and for region/ output/endpoint_url it will point at `~/.aws/config`.
+    *The output has four columns; `Name, Value, Type, Location`. The Location column is the one that answers "where did this come from"; for the access key and secret it will say something like `~/.aws/credentials`, and for region/ output/endpoint_url it will point at `~/.aws/config`*.
 
 - **Step 13 (First CLI call):** Ran `aws sts get-caller-identity` and the `whoami.sh` helper script to confirm the CLI was talking to Floci (Account `000000000000`).
 
@@ -153,6 +153,7 @@ With the environment ready, the IAM foundation was built: three groups (`usms-ad
     Generate a skeleton for `aws iam create-policy` and for `aws ec2 create-vpc` (you'll need the latter in Lab 2). Save both in templates/. Which parameter of create-vpc looks like the most important one?
 
     ![](../../screenshots/lab-01/activity5.png)
+
     *Ran the command and it created with fields like **CidrBlock, InstanceTenancy, TagSpecifications**, etc. The most important one is **CidrBlock** as it's the one field with no sensible default; it defines the entire IP address range of the VPC, and everything else (subnets, routing) is built on top of it*
 
 - **Step 25 (Inline policy):** Added one inline policy, `USMSSelfManageCredentials`, directly to `usms-dev-01` with `aws iam put-user-policy`; the single deliberate exception to "permissions go on groups, not users."
@@ -195,10 +196,12 @@ With the environment ready, the IAM foundation was built: three groups (`usms-ad
     Predict before running anything; the decision for `usms-audit-01` on `ec2:CreateVpc` and on `ec2:DescribeVpcs`. Write your prediction in `notes/lab-01-notes`.md, then check it. If Floci does not support the simulator, justify your prediction by quoting the relevant statement from the policy JSON.
 
     ![](../../screenshots/lab-01/12.png)
+
     *Predictions were all done and accessible to this path `notes/lab-01-notes`. The predictions were also correct as the table returend with `implicitDeny` for `CreateVpc` and `allowed` for `DescribeVpcs`*
 
 ### 6.3 Verification
 ![](../../screenshots/lab-01/final.png)
+
 ## 7. Analysis and Discussion
 
 The practical showed how IAM separates *who* (users/roles) from *what they can do* (policies), and how attaching permissions to groups instead of individuals keeps administration scalable. It also reinforced the difference between a role's permissions policy and its trust policy; a role needs both to be usable.
@@ -207,7 +210,7 @@ One limitation was that Floci does not enforce IAM policies by default, so `Acce
 
 ## 8. Reflection
  
-This practical gave hands-on experience with IAM alongside a realistic local AWS development workflow using Docker and an emulator. The main takeaway was that permissions should live on groups and roles, not individual users, and that a role's trust policy and permissions policy are two distinct documents that are easy to conflate.
+This practical gave hands-on experience with IAM alongside a realistic local AWS development workflow using Docker and an emulator. The main takeaway was that permissions should live on groups and roles.
 
 ## 9. Conclusion
 
