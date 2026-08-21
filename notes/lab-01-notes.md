@@ -1,4 +1,4 @@
-## Step 32 — Policy Simulator Predictions for usms-audit-01
+## Step 32: Policy Simulator Predictions for usms-audit-01
 
 ### 1. Action: `ec2:CreateVpc`
 * **Predicted Decision:** `implicitDeny`
