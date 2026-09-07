@@ -119,7 +119,7 @@ All configuration steps completed successfully, and the deployed web application
 
 This practical provided hands-on experience with one of the most fundamental building blocks of AWS networking. I learned how a VPC, subnets, route tables, an Internet Gateway, and a NAT Gateway work together to create a secure, segmented network, and how a security group controls access to resources at the instance level.
 
-A key observation was the difference in routing between public and private subnets: the destination for internet-bound traffic (`0.0.0.0/0`) is the same in both route tables, but the target differs — the Internet Gateway for public subnets, and the NAT Gateway for private subnets — and this single difference is what defines a subnet as public or private.
+A key observation was the difference in routing between public and private subnets: the destination for internet-bound traffic (`0.0.0.0/0`) is the same in both route tables, but the target differs  : the Internet Gateway for public subnets, and the NAT Gateway for private subnets  : and this single difference is what defines a subnet as public or private.
 
 In real-world cloud environments, this kind of VPC design would be used to host multi-tier applications, keeping web-facing components in public subnets and databases or application servers in private subnets, reducing the attack surface while maintaining internet connectivity where needed.
 

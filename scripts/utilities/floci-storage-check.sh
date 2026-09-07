@@ -31,12 +31,12 @@ else
   note "This is a 'floci start' container. Fix: floci stop --remove && ./scripts/setup/floci-up.sh"
 fi
 
-hdr "2. Storage mode — the usual culprit"
+hdr "2. Storage mode  : the usual culprit"
 mode="$(envof FLOCI_STORAGE_MODE)"; mode="${mode:-<unset>}"
 if [ "$mode" = "memory" ] || [ "$mode" = "<unset>" ]; then
   bad "FLOCI_STORAGE_MODE=$mode"
   note "Floci defaults to 'memory'. Nothing survives a restart, and Floci deletes"
-  note "its own volumes on teardown — hence 'a new volume every time'."
+  note "its own volumes on teardown  : hence 'a new volume every time'."
   note "Fix: FLOCI_STORAGE_MODE=hybrid in configs/course.env, then floci-up.sh"
 else
   ok "FLOCI_STORAGE_MODE=$mode (durable)"
@@ -46,7 +46,7 @@ hdr "3. Is /app/data a real host directory?"
 m="$(docker container inspect "$FLOCI_CONTAINER_NAME" \
      --format '{{ range .Mounts }}{{ if eq .Destination "/app/data" }}{{ .Type }} {{ .Source }}{{ end }}{{ end }}')"
 if [ -z "$m" ]; then
-  bad "/app/data is not mounted — state dies with the container."
+  bad "/app/data is not mounted  : state dies with the container."
 else
   set -- $m
   if [ "$1" = "bind" ]; then
@@ -61,7 +61,7 @@ fi
 hdr "4. Sidecar storage (RDS / OpenSearch / MSK / ECR)"
 hp="$(envof FLOCI_STORAGE_HOST_PERSISTENT_PATH)"
 if [ -z "$hp" ]; then
-  bad "FLOCI_STORAGE_HOST_PERSISTENT_PATH is unset — sidecars use anonymous volumes."
+  bad "FLOCI_STORAGE_HOST_PERSISTENT_PATH is unset  : sidecars use anonymous volumes."
 elif [ "${hp#/}" = "$hp" ]; then
   bad "FLOCI_STORAGE_HOST_PERSISTENT_PATH='$hp' is not absolute. Floci rejects it."
 else
@@ -71,7 +71,7 @@ fi
 hdr "5. Floci-managed volumes on this machine"
 vols="$(docker volume ls -q --filter label=floci=true || true)"
 if [ -z "$vols" ]; then
-  note "(none — expected while everything is bind-mounted)"
+  note "(none  : expected while everything is bind-mounted)"
 else
   printf '%s\n' "$vols" | sed 's/^/         /'
   note "Count: $(printf '%s\n' "$vols" | wc -l | tr -d ' ')"
@@ -82,7 +82,7 @@ hdr "6. Host state directory"
 if [ -d "$FLOCI_HOST_DATA_DIR" ]; then
   ok "$FLOCI_HOST_DATA_DIR exists (size: $(du -sh "$FLOCI_HOST_DATA_DIR" 2>/dev/null | cut -f1))"
   ls -1 "$FLOCI_HOST_DATA_DIR" 2>/dev/null | head -20 | sed 's/^/           /'
-  [ -n "$(ls -A "$FLOCI_HOST_DATA_DIR" 2>/dev/null)" ] || bad "Directory is EMPTY — see checks 2 and 3."
+  [ -n "$(ls -A "$FLOCI_HOST_DATA_DIR" 2>/dev/null)" ] || bad "Directory is EMPTY  : see checks 2 and 3."
 else
   bad "$FLOCI_HOST_DATA_DIR does not exist."
 fi

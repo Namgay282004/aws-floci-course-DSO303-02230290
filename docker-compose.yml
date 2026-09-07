@@ -1,6 +1,6 @@
 
 # =============================================================================
-#  aws-floci-course — pinned Floci environment
+#  aws-floci-course  : pinned Floci environment
 #  Bring up with:  ./scripts/setup/floci-up.sh
 #  Pause with:     ./scripts/setup/floci-down.sh     (state is KEPT)
 #  NEVER run:      docker compose down -v            (state is DESTROYED)

@@ -26,7 +26,7 @@ Built `usms-analytics-partner-role` with a trust policy scoped to `usms-audit-01
 
 ## Exercise 4 : Least-Privilege Backup Operator
 
-Chose a **role** over a user or group, since the backup job is unattended and automated; a role avoids any long-lived access key. Built a 4-statement policy: read the source bucket, write to the archive bucket, verify the archive contents, and write a completion log to CloudWatch Logs — each scoped to `us-east-1` via an `aws:RequestedRegion` condition, with no wildcard resources on any `Allow`.
+Chose a **role** over a user or group, since the backup job is unattended and automated; a role avoids any long-lived access key. Built a 4-statement policy: read the source bucket, write to the archive bucket, verify the archive contents, and write a completion log to CloudWatch Logs  : each scoped to `us-east-1` via an `aws:RequestedRegion` condition, with no wildcard resources on any `Allow`.
 
 ![](../../screenshots/lab-01/exercise4.png)
 

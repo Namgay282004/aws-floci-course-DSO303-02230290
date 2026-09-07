@@ -77,7 +77,7 @@ With the environment ready, the IAM foundation was built: three groups (`usms-ad
 
     ![](../../screenshots/lab-01/2.png)
   **Provided Screenshot** : shows the identity check succeeding.
-- **Step 14 (Isolation proof):** Used `--debug` to confirm requests were going to `http://localhost:4566`, then stopped Floci and confirmed the CLI failed — proving commands never reach real AWS.
+- **Step 14 (Isolation proof):** Used `--debug` to confirm requests were going to `http://localhost:4566`, then stopped Floci and confirmed the CLI failed  : proving commands never reach real AWS.
 
     ![](../../screenshots/lab-01/2.1.png)
   **Provided Screenshot**: shows the debug output and/or the connection failure.
@@ -182,7 +182,7 @@ With the environment ready, the IAM foundation was built: three groups (`usms-ad
 
   ![](../../screenshots/lab-01/10.6.png)
 
-- **Step 31 (Access keys):** Generated a long-lived access key for `usms-dev-01` with `aws iam create-access-key`, and saved it to the git-ignored `outputs/` folder — never committed.
+- **Step 31 (Access keys):** Generated a long-lived access key for `usms-dev-01` with `aws iam create-access-key`, and saved it to the git-ignored `outputs/` folder  : never committed.
 
     ![](../../screenshots/lab-01/10.7.png)
 

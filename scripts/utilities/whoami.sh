@@ -15,7 +15,7 @@ aws sts get-caller-identity --output table
 
 acct="$(aws sts get-caller-identity --query Account --output text)"
 if [ "$acct" = "$ACCOUNT_ID" ]; then
-  printf '\033[1;32m[ok] Account %s — this is Floci, not real AWS.\033[0m\n' "$acct"
+  printf '\033[1;32m[ok] Account %s  : this is Floci, not real AWS.\033[0m\n' "$acct"
 else
   printf '\033[1;31m[DANGER] Account %s is NOT the Floci account (%s).\033[0m\n' "$acct" "$ACCOUNT_ID"
   printf '\033[1;31mYou may be pointed at REAL AWS. Stop and re-check your profile.\033[0m\n'

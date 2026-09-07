@@ -1,0 +1,36 @@
+{
+    "ImageId": "ami-0abcdef1234567890",
+    "InstanceType": "t3.micro",
+    "KeyName": "usms-app-key",
+    "SubnetId": "subnet-default-c",
+    "SecurityGroupIds": [
+        "sg-ced6eb75af0157027"
+    ],
+    "IamInstanceProfile": {
+        "Name": "usms-ec2-app-profile"
+    },
+    "UserData": "IyEvYmluL2Jhc2gKIyBVU01TIHdlYiB0aWVyIGJvb3RzdHJhcC4gUnVucyBPTkNFLCBhcyByb290LCBhdCBmaXJzdCBib290LCB2aWEgY2xvdWQtaW5pdC4KIyBFdmVyeXRoaW5nIGhlcmUgbXVzdCBiZSBub24taW50ZXJhY3RpdmUgYW5kIGlkZW1wb3RlbnQuCnNldCAteApleGVjID4gL3Zhci9sb2cvdXNtcy1ib290c3RyYXAubG9nIDI+JjEKCmVjaG8gIlVTTVMgYm9vdHN0cmFwIHN0YXJ0aW5nIGF0ICQoZGF0ZSAtdSArJVktJW0tJWRUJUg6JU06JVNaKSIKCmRuZiAteSB1cGRhdGUKZG5mIC15IGluc3RhbGwgbmdpbngKCiMgQXNrIHRoZSBpbnN0YW5jZSBhYm91dCBpdHNlbGYsIHVzaW5nIElNRFN2MiAodG9rZW4tYmFzZWQsIHRoZSBzZWN1cmUgZGVmYXVsdCkuClRPS0VOPSQoY3VybCAtc1ggUFVUICJodHRwOi8vMTY5LjI1NC4xNjkuMjU0L2xhdGVzdC9hcGkvdG9rZW4iIFwKICAtSCAiWC1hd3MtZWMyLW1ldGFkYXRhLXRva2VuLXR0bC1zZWNvbmRzOiAzMDAiKQptZXRhKCkgewogIGN1cmwgLXMgLUggIlgtYXdzLWVjMi1tZXRhZGF0YS10b2tlbjogJFRPS0VOIiBcCiAgICAiaHR0cDovLzE2OS4yNTQuMTY5LjI1NC9sYXRlc3QvbWV0YS1kYXRhLyQxIgp9CgpJTlNUQU5DRV9JRD0kKG1ldGEgaW5zdGFuY2UtaWQpCkFaPSQobWV0YSBwbGFjZW1lbnQvYXZhaWxhYmlsaXR5LXpvbmUpClBSSVZBVEVfSVA9JChtZXRhIGxvY2FsLWlwdjQpCgpjYXQgPiAvdXNyL3NoYXJlL25naW54L2h0bWwvaW5kZXguaHRtbCA8PEhUTUwKPCFkb2N0eXBlIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KPGhlYWQ+PG1ldGEgY2hhcnNldD0idXRmLTgiPjx0aXRsZT5VU01TIOKAlCBVbml2ZXJzaXR5IFN0dWRlbnQgTWFuYWdlbWVudCBTeXN0ZW08L3RpdGxlPjwvaGVhZD4KPGJvZHkgc3R5bGU9ImZvbnQtZmFtaWx5OnN5c3RlbS11aSxzYW5zLXNlcmlmO21heC13aWR0aDo0MHJlbTttYXJnaW46NHJlbSBhdXRvIj4KICA8aDE+VVNNUyBTdHVkZW50IFBvcnRhbDwvaDE+CiAgPHA+VW5pdmVyc2l0eSBTdHVkZW50IE1hbmFnZW1lbnQgU3lzdGVtICZtZGFzaDsgd2ViIHRpZXI8L3A+CiAgPHRhYmxlIGJvcmRlcj0iMSIgY2VsbHBhZGRpbmc9IjYiIGNlbGxzcGFjaW5nPSIwIj4KICAgIDx0cj48dGQ+SW5zdGFuY2U8L3RkPjx0ZD4ke0lOU1RBTkNFX0lEfTwvdGQ+PC90cj4KICAgIDx0cj48dGQ+QXZhaWxhYmlsaXR5IFpvbmU8L3RkPjx0ZD4ke0FafTwvdGQ+PC90cj4KICAgIDx0cj48dGQ+UHJpdmF0ZSBhZGRyZXNzPC90ZD48dGQ+JHtQUklWQVRFX0lQfTwvdGQ+PC90cj4KICAgIDx0cj48dGQ+Qm9vdHN0cmFwcGVkPC90ZD48dGQ+JChkYXRlIC11ICslWS0lbS0lZFQlSDolTTolU1opPC90ZD48L3RyPgogIDwvdGFibGU+CjwvYm9keT4KPC9odG1sPgpIVE1MCgojIEEgbWFjaGluZS1yZWFkYWJsZSBlbmRwb2ludCwgc28gYSBoZWFsdGggY2hlY2sgZG9lcyBub3QgaGF2ZSB0byBwYXJzZSBIVE1MLgpwcmludGYgJ3sic2VydmljZSI6InVzbXMtd2ViIiwic3RhdHVzIjoib2siLCJpbnN0YW5jZSI6IiVzIiwiYXoiOiIlcyJ9XG4nIFwKICAiJElOU1RBTkNFX0lEIiAiJEFaIiA+IC91c3Ivc2hhcmUvbmdpbngvaHRtbC9oZWFsdGguanNvbgoKc3lzdGVtY3RsIGVuYWJsZSAtLW5vdyBuZ2lueAplY2hvICJVU01TIGJvb3RzdHJhcCBjb21wbGV0ZSIK",
+    "TagSpecifications": [
+        {
+            "ResourceType": "instance",
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "usms-web-02"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "USMS"
+                },
+                {
+                    "Key": "Tier",
+                    "Value": "web"
+                },
+                {
+                    "Key": "Lab",
+                    "Value": "03"
+                }
+            ]
+        }
+    ]
+}
