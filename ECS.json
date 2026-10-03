@@ -1,0 +1,795 @@
+{
+  "format": "aws-architecture-lab",
+  "version": 2,
+  "applicationRelease": {
+    "version": "1.0.0",
+    "buildId": "2ab04412-685a-4d3b-a5c6-82f6f82ba2d8",
+    "channel": "preview",
+    "builtAt": "2026-09-27T17:52:21.085Z",
+    "draftVersion": 2
+  },
+  "savedAt": "2026-10-03T23:40:00.000Z",
+  "state": {
+    "draftName": "USMS-Enrolment-Architecture-Fixed",
+    "nodes": [
+      {
+        "id": "box-vpc",
+        "type": "boundaryNode",
+        "position": {
+          "x": 60,
+          "y": 40
+        },
+        "data": {
+          "label": "VPC (10.0.0.0/16)",
+          "boundaryType": "vpc",
+          "width": 1280,
+          "height": 720,
+          "cidr": "10.0.0.0/16",
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "style": {
+          "width": 1280,
+          "height": 720
+        },
+        "draggable": true,
+        "selectable": true,
+        "zIndex": -5,
+        "measured": {
+          "width": 1280,
+          "height": 720
+        },
+        "selected": false
+      },
+      {
+        "id": "box-public-subnet",
+        "type": "boundaryNode",
+        "position": {
+          "x": 380,
+          "y": 80
+        },
+        "data": {
+          "label": "Public Subnet (IGW / NAT Gateway) (10.0.0.0/18)",
+          "boundaryType": "public_subnet",
+          "width": 300,
+          "height": 620,
+          "cidr": "10.0.0.0/18",
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "style": {
+          "width": 300,
+          "height": 620
+        },
+        "draggable": true,
+        "selectable": true,
+        "zIndex": -4,
+        "measured": {
+          "width": 300,
+          "height": 620
+        },
+        "selected": false
+      },
+      {
+        "id": "box-private-subnet-1",
+        "type": "boundaryNode",
+        "position": {
+          "x": 720,
+          "y": 80
+        },
+        "data": {
+          "label": "Private Subnet (subnet-ed6730d0) (10.0.64.0/18)",
+          "boundaryType": "private_subnet",
+          "width": 280,
+          "height": 620,
+          "cidr": "10.0.64.0/18",
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "style": {
+          "width": 280,
+          "height": 620
+        },
+        "draggable": true,
+        "selectable": true,
+        "zIndex": -4,
+        "measured": {
+          "width": 280,
+          "height": 620
+        },
+        "selected": false
+      },
+      {
+        "id": "box-private-subnet-2",
+        "type": "boundaryNode",
+        "position": {
+          "x": 1020,
+          "y": 80
+        },
+        "data": {
+          "label": "Private Subnet (subnet-393fd5d0) (10.0.128.0/18)",
+          "boundaryType": "private_subnet",
+          "width": 280,
+          "height": 620,
+          "cidr": "10.0.128.0/18",
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "style": {
+          "width": 280,
+          "height": 620
+        },
+        "draggable": true,
+        "selectable": true,
+        "zIndex": -4,
+        "measured": {
+          "width": 280,
+          "height": 620
+        },
+        "selected": false
+      },
+      {
+        "id": "node-user",
+        "type": "serviceNode",
+        "position": {
+          "x": -180,
+          "y": 280
+        },
+        "data": {
+          "serviceId": "user",
+          "label": "End User / Client",
+          "category": "Client / Ingress",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "global",
+          "replicas": 1,
+          "multiAz": false,
+          "width": 120,
+          "height": 80,
+          "isSimulating": true,
+          "simulationStatus": "active"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 120,
+          "height": 80
+        },
+        "style": {
+          "width": 120,
+          "height": 80
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "node-igw",
+        "type": "serviceNode",
+        "position": {
+          "x": 100,
+          "y": 280
+        },
+        "data": {
+          "serviceId": "internet_gateway",
+          "label": "Internet Gateway (IGW)",
+          "category": "Networking & Content Delivery",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "public",
+          "replicas": 1,
+          "multiAz": false,
+          "width": 140,
+          "height": 90,
+          "isSimulating": false,
+          "simulationStatus": "success"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 140,
+          "height": 90
+        },
+        "style": {
+          "width": 140,
+          "height": 90
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "node-app-sg-proxy",
+        "type": "serviceNode",
+        "position": {
+          "x": 420,
+          "y": 180
+        },
+        "data": {
+          "serviceId": "alb",
+          "label": "App Ingress / usms-app-sg",
+          "category": "Networking & Security",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "public",
+          "replicas": 1,
+          "multiAz": false,
+          "width": 160,
+          "height": 90,
+          "isSimulating": false,
+          "simulationStatus": "success"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 160,
+          "height": 90
+        },
+        "style": {
+          "width": 160,
+          "height": 90
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "node-nat-gw",
+        "type": "serviceNode",
+        "position": {
+          "x": 420,
+          "y": 420
+        },
+        "data": {
+          "serviceId": "nat_gateway",
+          "label": "NAT Gateway (usms-nat)",
+          "category": "Networking & Content Delivery",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "public",
+          "replicas": 1,
+          "multiAz": false,
+          "width": 150,
+          "height": 90,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 150,
+          "height": 90
+        },
+        "style": {
+          "width": 150,
+          "height": 90
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "node-ecs-task-1",
+        "type": "serviceNode",
+        "position": {
+          "x": 750,
+          "y": 180
+        },
+        "data": {
+          "serviceId": "ecs",
+          "label": "usms-enrolment-svc Task 1",
+          "category": "Compute",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "subnet-ed6730d0",
+          "replicas": 1,
+          "multiAz": true,
+          "width": 220,
+          "height": 130,
+          "isSimulating": true,
+          "simulationStatus": "active",
+          "customConfig": {
+            "ecsWorkspace": {
+              "clusterName": "usms-ecs-cluster",
+              "serviceName": "usms-enrolment-svc",
+              "family": "usms-enrolment:4",
+              "launchType": "FARGATE",
+              "assignPublicIp": "DISABLED",
+              "securityGroup": "usms-enrolment-sg",
+              "taskRole": "usms-ecs-task-role",
+              "executionRole": "usms-ecs-exec-role",
+              "logGroup": "/usms/ecs/enrolment",
+              "containers": [
+                {
+                  "name": "usms-enrolment-container",
+                  "port": "80",
+                  "essential": true
+                }
+              ]
+            },
+            "ecs": {
+              "desiredCount": 2,
+              "runningCount": 2,
+              "pendingCount": 0
+            }
+          }
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 220,
+          "height": 130
+        },
+        "style": {
+          "width": 220,
+          "height": 130
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "node-ecs-task-2",
+        "type": "serviceNode",
+        "position": {
+          "x": 1050,
+          "y": 180
+        },
+        "data": {
+          "serviceId": "ecs",
+          "label": "usms-enrolment-svc Task 2",
+          "category": "Compute",
+          "health": "healthy",
+          "az": "AZ-B",
+          "subnet": "subnet-393fd5d0",
+          "replicas": 1,
+          "multiAz": true,
+          "width": 220,
+          "height": 130,
+          "isSimulating": true,
+          "simulationStatus": "active",
+          "customConfig": {
+            "ecsWorkspace": {
+              "clusterName": "usms-ecs-cluster",
+              "serviceName": "usms-enrolment-svc",
+              "family": "usms-enrolment:4",
+              "launchType": "FARGATE",
+              "assignPublicIp": "DISABLED",
+              "securityGroup": "usms-enrolment-sg",
+              "taskRole": "usms-ecs-task-role",
+              "executionRole": "usms-ecs-exec-role",
+              "logGroup": "/usms/ecs/enrolment",
+              "containers": [
+                {
+                  "name": "usms-enrolment-container",
+                  "port": "80",
+                  "essential": true
+                }
+              ]
+            },
+            "ecs": {
+              "desiredCount": 2,
+              "runningCount": 2,
+              "pendingCount": 0
+            }
+          }
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 220,
+          "height": 130
+        },
+        "style": {
+          "width": 220,
+          "height": 130
+        },
+        "selected": false,
+        "dragging": false
+      },
+      {
+        "id": "node-cloudwatch",
+        "type": "serviceNode",
+        "position": {
+          "x": 900,
+          "y": 480
+        },
+        "data": {
+          "serviceId": "cloudwatch",
+          "label": "CloudWatch Logs\n/usms/ecs/enrolment",
+          "category": "Management & Governance",
+          "health": "healthy",
+          "az": "AZ-A",
+          "subnet": "private",
+          "replicas": 1,
+          "multiAz": true,
+          "width": 180,
+          "height": 90,
+          "isSimulating": false,
+          "simulationStatus": "idle"
+        },
+        "zIndex": 10,
+        "measured": {
+          "width": 180,
+          "height": 90
+        },
+        "style": {
+          "width": 180,
+          "height": 90
+        },
+        "selected": false,
+        "dragging": false
+      }
+    ],
+    "edges": [
+      {
+        "zIndex": 1000,
+        "source": "node-user",
+        "sourceHandle": "source-right",
+        "target": "node-igw",
+        "targetHandle": "target-left",
+        "id": "edge-user-igw",
+        "type": "custom",
+        "markerEnd": {
+          "type": "arrowclosed",
+          "color": "#94A3B8"
+        },
+        "data": {
+          "relationship": "request",
+          "protocol": "HTTPS",
+          "transport": "HTTPS",
+          "lineStyle": "straight",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 2500,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "flowStepNumber": 1,
+          "flowStepIndex": 0,
+          "flowAction": "External Request",
+          "flowLatency": 15,
+          "flowExplanation": "External user initiates HTTPS request entering the Internet Gateway."
+        }
+      },
+      {
+        "zIndex": 1000,
+        "source": "node-igw",
+        "sourceHandle": "source-right",
+        "target": "node-app-sg-proxy",
+        "targetHandle": "target-left",
+        "id": "edge-igw-app-sg",
+        "type": "custom",
+        "markerEnd": {
+          "type": "arrowclosed",
+          "color": "#94A3B8"
+        },
+        "data": {
+          "relationship": "request",
+          "protocol": "HTTP",
+          "transport": "HTTP",
+          "lineStyle": "straight",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 2500,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "flowStepNumber": 2,
+          "flowStepIndex": 1,
+          "flowAction": "Ingress Routing",
+          "flowLatency": 10,
+          "flowExplanation": "Traffic routed through application boundary with usms-app-sg security group."
+        }
+      },
+      {
+        "zIndex": 1000,
+        "source": "node-app-sg-proxy",
+        "sourceHandle": "source-right",
+        "target": "node-ecs-task-1",
+        "targetHandle": "target-left",
+        "id": "edge-app-sg-task1",
+        "type": "custom",
+        "markerEnd": {
+          "type": "arrowclosed",
+          "color": "#94A3B8"
+        },
+        "data": {
+          "relationship": "request",
+          "protocol": "HTTP",
+          "transport": "HTTP",
+          "lineStyle": "straight",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 2500,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "flowStepNumber": 3,
+          "flowStepIndex": 2,
+          "flowAction": "Route Port 80 Ingress",
+          "flowLatency": 12,
+          "flowExplanation": "Direct ingress allowed on port 80 into usms-enrolment-sg for Fargate task 1 in subnet-ed6730d0."
+        }
+      },
+      {
+        "zIndex": 1000,
+        "source": "node-app-sg-proxy",
+        "sourceHandle": "source-right",
+        "target": "node-ecs-task-2",
+        "targetHandle": "target-left",
+        "id": "edge-app-sg-task2",
+        "type": "custom",
+        "markerEnd": {
+          "type": "arrowclosed",
+          "color": "#94A3B8"
+        },
+        "data": {
+          "relationship": "request",
+          "protocol": "HTTP",
+          "transport": "HTTP",
+          "lineStyle": "straight",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 2500,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "flowStepNumber": 3,
+          "flowStepIndex": 2,
+          "flowAction": "Route Port 80 Ingress",
+          "flowLatency": 12,
+          "flowExplanation": "Direct ingress allowed on port 80 into usms-enrolment-sg for Fargate task 2 in subnet-393fd5d0."
+        }
+      },
+      {
+        "zIndex": 1000,
+        "source": "node-ecs-task-1",
+        "sourceHandle": "source-bottom",
+        "target": "node-nat-gw",
+        "targetHandle": "target-right",
+        "id": "edge-task1-nat",
+        "type": "custom",
+        "markerEnd": {
+          "type": "arrowclosed",
+          "color": "#94A3B8"
+        },
+        "data": {
+          "relationship": "dependency",
+          "protocol": "HTTPS",
+          "transport": "HTTPS",
+          "lineStyle": "straight",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 5000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "flowStepNumber": 4,
+          "flowStepIndex": 3,
+          "flowAction": "Image Pull Egress via NAT",
+          "flowLatency": 45,
+          "flowExplanation": "Task 1 in private subnet routes image pull via usms-private-rt -> usms-nat."
+        }
+      },
+      {
+        "zIndex": 1000,
+        "source": "node-ecs-task-2",
+        "sourceHandle": "source-bottom",
+        "target": "node-nat-gw",
+        "targetHandle": "target-right",
+        "id": "edge-task2-nat",
+        "type": "custom",
+        "markerEnd": {
+          "type": "arrowclosed",
+          "color": "#94A3B8"
+        },
+        "data": {
+          "relationship": "dependency",
+          "protocol": "HTTPS",
+          "transport": "HTTPS",
+          "lineStyle": "straight",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 5000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "flowStepNumber": 4,
+          "flowStepIndex": 3,
+          "flowAction": "Image Pull Egress via NAT",
+          "flowLatency": 45,
+          "flowExplanation": "Task 2 in private subnet routes image pull via usms-private-rt -> usms-nat."
+        }
+      },
+      {
+        "zIndex": 1000,
+        "source": "node-nat-gw",
+        "sourceHandle": "source-left",
+        "target": "node-igw",
+        "targetHandle": "target-bottom",
+        "id": "edge-nat-igw",
+        "type": "custom",
+        "markerEnd": {
+          "type": "arrowclosed",
+          "color": "#94A3B8"
+        },
+        "data": {
+          "relationship": "dependency",
+          "protocol": "HTTPS",
+          "transport": "HTTPS",
+          "lineStyle": "straight",
+          "interactionType": "synchronous",
+          "isCriticalDependency": true,
+          "timeoutMs": 5000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "flowStepNumber": 5,
+          "flowStepIndex": 4,
+          "flowAction": "NAT Egress to Internet",
+          "flowLatency": 10,
+          "flowExplanation": "usms-nat forwards egress traffic out through Internet Gateway (usms-igw)."
+        }
+      },
+      {
+        "zIndex": 1000,
+        "source": "node-ecs-task-1",
+        "sourceHandle": "source-bottom",
+        "target": "node-cloudwatch",
+        "targetHandle": "target-top",
+        "id": "edge-task1-cloudwatch",
+        "type": "custom",
+        "markerEnd": {
+          "type": "arrowclosed",
+          "color": "#94A3B8"
+        },
+        "data": {
+          "relationship": "logging",
+          "protocol": "HTTPS",
+          "transport": "HTTPS",
+          "lineStyle": "straight",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "flowStepNumber": 6,
+          "flowStepIndex": 5,
+          "flowAction": "Push Logs to CloudWatch",
+          "flowLatency": 5,
+          "flowExplanation": "Task 1 sends runtime logs via awslogs to /usms/ecs/enrolment."
+        }
+      },
+      {
+        "zIndex": 1000,
+        "source": "node-ecs-task-2",
+        "sourceHandle": "source-bottom",
+        "target": "node-cloudwatch",
+        "targetHandle": "target-top",
+        "id": "edge-task2-cloudwatch",
+        "type": "custom",
+        "markerEnd": {
+          "type": "arrowclosed",
+          "color": "#94A3B8"
+        },
+        "data": {
+          "relationship": "logging",
+          "protocol": "HTTPS",
+          "transport": "HTTPS",
+          "lineStyle": "straight",
+          "interactionType": "asynchronous",
+          "isCriticalDependency": false,
+          "timeoutMs": 1000,
+          "isSimulating": false,
+          "isFailing": false,
+          "flowStatus": "completed",
+          "flowStepNumber": 6,
+          "flowStepIndex": 5,
+          "flowAction": "Push Logs to CloudWatch",
+          "flowLatency": 5,
+          "flowExplanation": "Task 2 sends runtime logs via awslogs to /usms/ecs/enrolment."
+        }
+      }
+    ],
+    "scenario": {
+      "id": "usms-enrolment-scenario",
+      "name": "USMS Enrolment Request Processing",
+      "method": "POST",
+      "path": "/usms/enrolment",
+      "startNodeId": "node-user",
+      "trafficLevel": "normal"
+    },
+    "simulationResult": {
+      "scenario": {
+        "id": "usms-enrolment-scenario",
+        "name": "USMS Enrolment Request Processing",
+        "method": "POST",
+        "path": "/usms/enrolment",
+        "startNodeId": "node-user",
+        "trafficLevel": "normal"
+      },
+      "serviceStates": {},
+      "steps": [
+        {
+          "id": "step-1",
+          "stepNumber": 1,
+          "timestampMs": 0,
+          "sourceNodeId": "node-user",
+          "targetNodeId": "node-igw",
+          "sourceNodeName": "End User / Client",
+          "targetNodeName": "Internet Gateway (IGW)",
+          "protocol": "HTTPS",
+          "action": "Issued POST /usms/enrolment",
+          "status": "success",
+          "explanation": "Client initiated POST /usms/enrolment request.",
+          "targetHealth": "healthy",
+          "latencyMs": 15
+        },
+        {
+          "id": "step-2",
+          "stepNumber": 2,
+          "timestampMs": 15,
+          "sourceNodeId": "node-igw",
+          "targetNodeId": "node-app-sg-proxy",
+          "sourceNodeName": "Internet Gateway (IGW)",
+          "targetNodeName": "App Ingress / usms-app-sg",
+          "protocol": "HTTP",
+          "action": "Forward Request to Application Ingress",
+          "status": "success",
+          "explanation": "Traffic passed through Internet Gateway to application entrance (usms-app-sg).",
+          "targetHealth": "healthy",
+          "latencyMs": 10
+        },
+        {
+          "id": "step-3",
+          "stepNumber": 3,
+          "timestampMs": 25,
+          "sourceNodeId": "node-app-sg-proxy",
+          "targetNodeId": "node-ecs-task-1",
+          "sourceNodeName": "App Ingress / usms-app-sg",
+          "targetNodeName": "usms-enrolment-svc Task 1",
+          "protocol": "HTTP",
+          "action": "Route Port 80 to Private Subnet Task",
+          "status": "success",
+          "explanation": "Security group usms-enrolment-sg accepted traffic on port 80 from usms-app-sg.",
+          "targetHealth": "healthy",
+          "latencyMs": 12
+        },
+        {
+          "id": "step-4",
+          "stepNumber": 4,
+          "timestampMs": 37,
+          "sourceNodeId": "node-ecs-task-1",
+          "targetNodeId": "node-cloudwatch",
+          "sourceNodeName": "usms-enrolment-svc Task 1",
+          "targetNodeName": "CloudWatch Logs",
+          "protocol": "HTTPS",
+          "action": "Ship Application & Execution Logs",
+          "status": "success",
+          "explanation": "awslogs driver pushed task runtime logs to /usms/ecs/enrolment.",
+          "targetHealth": "healthy",
+          "latencyMs": 5
+        }
+      ],
+      "success": true,
+      "totalLatencyMs": 42,
+      "statusCode": 200,
+      "summary": "Enrolment service request successfully executed across usms-ecs-cluster on AWS Fargate.",
+      "bottlenecksDetected": [],
+      "cascadeOccurred": false,
+      "path": [
+        "node-user",
+        "node-igw",
+        "node-app-sg-proxy",
+        "node-ecs-task-1"
+      ]
+    },
+    "activeFailures": [],
+    "activeLabReference": null,
+    "activeChallengeId": null,
+    "challengeResult": null,
+    "appMode": "simulate",
+    "selectedNodeId": null,
+    "selectedEdgeId": null,
+    "activeStepIndex": 3,
+    "playbackSpeed": 1,
+    "highlightTaskFlow": true,
+    "showNaclSideColumn": false,
+    "viewport": {
+      "x": 300,
+      "y": 100,
+      "zoom": 0.75
+    }
+  }
+}

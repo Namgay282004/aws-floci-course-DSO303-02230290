@@ -30,17 +30,9 @@ The USMS microservices architecture requires deploying the core `usms-enrolment`
 * **IAM Identity Isolation:** `usms-ecs-exec-role` (Task Execution) and `usms-ecs-task-role` (Runtime Application Task).
 * **Logging Integration:** CloudWatch Log Group `/usms/ecs/enrolment` using the `awslogs` driver.
 
-```
-usms-ecs-cluster
- └── usms-enrolment-svc          ACTIVE   FARGATE
-      ├── task definition        usms-enrolment:4
-      ├── desired 2 / running 2 / pending 0
-      ├── subnets                subnet-ed6730d0, subnet-393fd5d0
-      ├── security group         usms-enrolment-sg (in: 80 from usms-app-sg)
-      ├── assignPublicIp         DISABLED
-      └── image pulled via       usms-private-rt -> usms-nat -> usms-igw
+![](../../screenshots/lab-04/11.png)
 
-```
+***Figure**: USMS enrolment architecture. Client traffic enters through the Internet Gateway and reaches the web tier (usms-web-01, usms-app-sg), which calls the Fargate tasks of usms-enrolment-svc (in usms-ecs-cluster) on tcp/80. The tasks sit in two private subnets, and usms-enrolment-sg admits only traffic from usms-app-sg. Tasks pull container images through usms-nat and the Internet Gateway, and write logs to the /usms/ecs/enrolment CloudWatch log group. usms-ecs-exec-role pulls the image and writes logs; usms-ecs-task-role is the application's runtime identity.*
 
 ## 5. Implementation Procedure
 
@@ -163,7 +155,7 @@ Manually modified capacity using `aws ecs update-service --desired-count 3`, obs
 
 ![](../../screenshots/lab-04/5.3.png)
 
-### 6.14 Step 12 : Write configs/lab-04.env
+### 6.13 Step 12 : Write configs/lab-04.env
 
 Populated `configs/lab-04.env` with environment parameters required by the verification engine (`USMS_ECS_CLUSTER`, `USMS_ENROLMENT_SERVICE`, `USMS_ECS_DESIRED_BASELINE=2`, subnet IDs, and security group IDs).
 
@@ -171,7 +163,7 @@ Populated `configs/lab-04.env` with environment parameters required by the verif
 
 ![](../../screenshots/lab-04/7.png)
 
-### 6.15 Step 13 : Git Hygiene & Secret Verification
+### 6.14 Step 13 : Git Hygiene & Secret Verification
 
 Ensured all credentials and local log artifacts were ignored via `.gitignore` and no secrets were tracked by Git.
 
