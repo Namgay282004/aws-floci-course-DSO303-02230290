@@ -210,6 +210,7 @@ Committed configuration files, policies, scripts, and documentation to Git.
 
 #### Build scripts/utilities/verify-lab-02.sh
 Executed `verify-lab-02.sh` to validate all 33 assertion checks.
+
 ![](../../screenshots/lab-02-vpc/verification.png)
 
 

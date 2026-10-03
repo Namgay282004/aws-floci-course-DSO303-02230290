@@ -32,3 +32,4 @@ Thumbs.db
 .idea/
 configs/course.env
 configs/*.env
+outputs/
