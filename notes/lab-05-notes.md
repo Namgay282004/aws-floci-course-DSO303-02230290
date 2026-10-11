@@ -1,0 +1,4 @@
+(a) An application that issues a 301 or 302 HTTP redirect on its root path / (e.g., redirecting / to /login or /dashboard) would fail a strict 200 matcher forever despite operating normally.   (b) Leaving it at 200-399 would be a bug in your work because a verification script enforces the precise architectural specification chosen for the lab baseline (HttpCode=200), not merely any functioning setting.
+
+Question: Name the ONE thing you would have had to do by hand after every single scaling event if the service did not register its own targets.
+Answer: Run aws elbv2 register-targets or deregister-targets manually with the target IP address after every scale-out or scale-in event.
