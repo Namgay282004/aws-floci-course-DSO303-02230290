@@ -44,6 +44,10 @@ A student clicks "Register for this module" in the USMS portal. The request arri
 | Kubernetes | namespace `usms` | Holds everything below |
 | Kubernetes | 3 Deployments, 3 ClusterIP Services, 4 ConfigMaps, 1 Secret, 1 ServiceAccount | The microservices |
 
+![](../../screenshots/lab-07/architecture.png)
+
+*Figure 1: High-Level EKS Microservices Architecture for Lab 07 (usms-vpc). The diagram illustrates the 3-tier microservices deployment on Amazon EKS within the usms-vpc network. The EKS Control Plane and Managed Node Group (usms-eks-nodes) operate across public subnets, governed by IAM roles (usms-eks-cluster-role, usms-eks-node-role) and cluster security groups. Workloads reside in the private subnets within the usms namespace: usms-gateway handles path-based reverse proxy routing to backend usms-enrolment and usms-results microservices (each running 2 ready replicas with 50m CPU requests). Application state and security are managed via shared/service ConfigMaps (usms-app-config) and Kubernetes Secrets.*
+
 ---
 
 ## 5. Implementation Overview
@@ -434,7 +438,7 @@ Direct checks showed that `usms-eks-cluster-role` and `usms-eks-node-role` retur
 
 The file was generated with an unquoted heredoc so every `$(...)` runs at write time. The first generation (before the IAM repair) had four empty values, which the empty-value check caught (screenshot 66). After the OIDC provider and IAM objects were recreated, the file was regenerated.
 
-![](../../screenshots/lab-07/69.png)
+![](../../screenshots/lab-07/66.png)
 
 *(Screenshot 69 should show `all values populated`, `cluster=usms-eks-cluster ns=usms lb_ports=8081,8082` and `21`.)*
 
@@ -442,7 +446,7 @@ The Deployment's CPU request was confirmed independently as `50m`, because Lab 0
 
 #### Step 24 - Commit
 
-*(Pending: add the `git status --short`, `git check-ignore -v` and commit output here.)*
+![](../../screenshots/lab-07/70.png)
 
 ---
 
@@ -460,13 +464,13 @@ The script checks configuration as well as existence: the cluster role trusts `e
 
 #### 7.2 Result
 
-![](../../screenshots/lab-07/70.png)
+![](../../screenshots/lab-07/69.png)
 
 *(Pending: insert the final `PASS=… FAIL=…` line. The lab expects `PASS=30 FAIL=0` on Path A.)*
 
 #### 7.3 Cleanup script
 
-*(Pending: the end-of-course cleanup script is written and syntax-checked with `bash -n`, and deliberately not run.)*
+![](../../screenshots/lab-07/71.png)
 
 ---
 
@@ -518,86 +522,3 @@ The script checks configuration as well as existence: the cluster role trusts `e
 An EKS cluster and managed node group were created in Lab 02's network with separate IAM roles, `kubectl` was connected, and three microservices were deployed declaratively. Service discovery by DNS, pod self-healing, rolling updates and rollbacks, three failure modes, and the base64 weakness of Secrets were demonstrated. A Floci restart proved that the cluster and Kubernetes state persist but exposed a loss of the EKS IAM roles, policies and OIDC provider, which was diagnosed and repaired. The final verification score and commit are pending.
 
 ---
-
-## 11. Appendix
-
-**Files**
-
-* `policies/trust-eks-cluster.json`, `trust-eks-node.json`, `usms-eks-cluster-policy.json`, `usms-eks-node-policy.json`
-* `templates/lab-07-create-cluster.json`, `lab-07-create-nodegroup.json`
-* `manifests/lab-07/00-namespace.yaml`, `10-configmap-app.yaml`, `11-secret-app.yaml`, `20-enrolment.yaml`, `30-results.yaml`, `40-gateway.yaml`, `50-gateway-nodeport.yaml`, `60-serviceaccount.yaml`
-* `scripts/utilities/eks-support-probe.sh`, `verify-lab-07.sh`
-* `configs/lab-07.env`
-* `outputs/lab-07-support-probe.txt`, `lab-07-cluster.json`, `lab-07-nodegroup.json`, `lab-07-after-restart.txt`
-* `notes/lab-07-notes.md`
-
-**Screenshot index (rename your files to match)**
-
-| # | Shows |
-| --- | --- |
-| 1 | `floci-up.sh` and `whoami.sh` |
-| 2 | Storage check, hybrid mode |
-| 3 | `verify-lab-02` / `verify-lab-04` and subnet variables |
-| 4 | Writing `eks-support-probe.sh` |
-| 5 | Probe output, PATH A |
-| 6 | Verdict recorded in notes |
-| 7 | Step 3 notes answer |
-| 8 | Trust policies written and validated |
-| 9 | Trust policy verification |
-| 10 | Permission policies written and validated |
-| 11 | Policy statement summary |
-| 12 | Cluster role created |
-| 13 | Cluster policy created and attached |
-| 14 | Cluster security group |
-| 15 | Cluster role and SG verification |
-| 16 | Node role, policies, three holders |
-| 17 | Node role verification |
-| 18 | Create-cluster request body |
-| 19 | Assume role, create cluster, unset credentials |
-| 20 | `describe-cluster` ACTIVE |
-| 21 | `_lb_ports_` read back |
-| 22 | Step 9 "Your turn": version and OIDC issuer |
-| 23 | Node group ACTIVE |
-| 24 | `update-kubeconfig`, `cluster-info`, `get nodes` |
-| 25 | Namespace created |
-| 26 | ConfigMap and enrolment applied |
-| 27 | Busybox request to enrolment |
-| 28 | Results rollout |
-| 29 | Gateway rollout |
-| 30 | Extra NodePort Service |
-| 31 | `nslookup` of both Services |
-| 32 | Gateway routes |
-| 33 | Short-name requests |
-| 34 | Deleting an enrolment pod (rename your delete-pod screenshot to 34) |
-| 35 | ReplicaSets, events, notes answer (rename to 35) |
-| 36 | Floci restart failing with "address already in use" |
-| 37 | 12-request tally |
-| 39 | Secret manifest created |
-| 40 | Base64 decode |
-| 41 | ConfigMap edit, restart, version 1.1.0 |
-| 42 | Secrets notes answer |
-| 43 | Enrolment re-apply and rollout |
-| 44 | Rollout history, 4 revisions |
-| 45 | `rollout undo` of enrolment |
-| 46 | ConfigMap and file both `1.0.0` |
-| 47 | `.bak` removed |
-| 48 | `set image` on `usms-results` |
-| 49 | Pod watch during the roll |
-| 50 | Rollback of `usms-results`, history 2 and 3 |
-| 53 | ImagePullBackOff pod list |
-| 55 | ImagePullBackOff events |
-| 56 | Rolled back, 2/2 |
-| 57 | FailedScheduling |
-| 58 | CrashLoopBackOff |
-| 59 | Namespace events |
-| 60 | Temporary pods removed |
-| 61 | ECS and EKS side by side |
-| 62 | IRSA: provider and ServiceAccount |
-| 63 | Floci restarted after clearing the port |
-| 64 | Node `Ready` after the restart |
-| 65 | Read-back from the API |
-| 66 | Empty values caught in `lab-07.env` |
-| 67 | IAM recreated and verified |
-| 68 | Security group, cluster role ARN, three holders |
-| 69 | Regenerated `lab-07.env` (pending) |
-| 70 | `verify-lab-07.sh` result (pending) |
