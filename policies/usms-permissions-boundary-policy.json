@@ -1,0 +1,28 @@
+{
+"Version": "2012-10-17",
+"Statement": [
+{
+  "Sid": "AllowBaseActions",
+  "Effect": "Allow",
+  "Action": [
+    "ec2:*",
+    "ecs:*",
+    "s3:*",
+    "logs:*",
+    "cloudwatch:*"
+  ],
+  "Resource": "*"
+},
+{
+  "Sid": "DenySensitiveOperations",
+  "Effect": "Deny",
+  "Action": [
+    "iam:CreateUser",
+    "iam:CreateAccessKey",
+    "organizations:*",
+    "account:*"
+  ],
+  "Resource": "*"
+}
+]
+}
