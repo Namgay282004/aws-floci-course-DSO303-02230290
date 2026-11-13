@@ -12,6 +12,11 @@
 | Exposure ladder: port-forward, NodePort, LoadBalancer, Ingress | **Done.** LoadBalancer stayed `<pending>` (no controller); Ingress served by ingress-nginx |
 | Persistence across a restart; `configs/lab-08.env` | **Done.** `PERSISTENCE PROVEN`; 19 exports |
 
+## System Architecture
+
+![syetem architecture](../../screenshots/lab-08/architecture.png)
+
+*Figure 1: Lab 08 architecture. Traffic enters through the Ingress to the gateway, enrolment and results Services. The HPA scales the enrolment Deployment (2–8 replicas, 50% CPU) using metrics-server data, with PodDisruptionBudgets limiting voluntary evictions on the 2-node EKS node group.*
 
 ## 3. Step-by-step implementation
 

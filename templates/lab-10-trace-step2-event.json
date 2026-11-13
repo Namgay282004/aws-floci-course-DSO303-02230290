@@ -1,0 +1,36 @@
+{
+  "Records": [
+    {
+      "cf": {
+        "config": {
+          "distributionDomainName": "d3examplecdn01.cloudfront.net",
+          "distributionId": "EDFDVBD6EXAMPLE",
+          "eventType": "origin-response",
+          "requestId": "lab06-trace-e2e-0001"
+        },
+        "request": {
+          "errorMessage": "Task timed out after 5 seconds",
+          "errorType": "Function.TimedOut"
+        },
+        "response": {
+          "status": "200",
+          "statusDescription": "OK",
+          "headers": {
+            "content-type": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "server": [
+              {
+                "key": "Server",
+                "value": "AmazonS3"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

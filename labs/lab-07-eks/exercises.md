@@ -11,8 +11,6 @@ To complete the independent exercise, create the manifest file `manifests/lab-07
 Run this command in your terminal to generate the ConfigMap, Deployment (with 2 replicas and resource requests), and ClusterIP Service for `usms-timetable`:
 
 ```bash
-cd ~/Desktop/Seventh-Semester/DSO303/aws-floci-course
-
 cat > manifests/lab-07/35-timetable.yaml << 'EOF'
 apiVersion: v1
 kind: ConfigMap
