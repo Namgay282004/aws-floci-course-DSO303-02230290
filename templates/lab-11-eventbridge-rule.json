@@ -1,0 +1,6 @@
+{
+  "Name": "usms-enrolment-src-trigger",
+  "Description": "Trigger usms-enrolment-pipeline when source/usms-enrolment-src.zip is uploaded to S3",
+  "State": "ENABLED",
+  "EventPattern": "{\"source\":[\"aws.s3\"],\"detail-type\":[\"Object Created\"],\"detail\":{\"bucket\":{\"name\":[\"usms-pipeline-artifacts\"]},\"object\":{\"key\":[\"source/usms-enrolment-src.zip\"]}}}"
+}

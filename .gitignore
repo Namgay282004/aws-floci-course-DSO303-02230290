@@ -33,3 +33,5 @@ Thumbs.db
 configs/course.env
 configs/*.env
 outputs/
+labs/lab-11-cicd/app/dist/
+labs/lab-11-cicd/app-results/dist/

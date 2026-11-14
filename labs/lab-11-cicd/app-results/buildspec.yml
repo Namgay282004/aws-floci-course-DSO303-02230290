@@ -1,0 +1,41 @@
+version: 0.2
+
+env:
+  variables:
+    SERVICE_NAME: "results"
+    ARTIFACT_DIR: "dist"
+
+phases:
+  install:
+    commands:
+      - echo "--- install results ---"
+      - python3 --version
+  pre_build:
+    commands:
+      - test -f VERSION
+  build:
+    commands:
+      - USMS_RELEASE="$(tr -d '[:space:]' < VERSION)"
+      - BUILT_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+      - rm -rf "$ARTIFACT_DIR" && mkdir -p "$ARTIFACT_DIR"
+      - cp -R src/. "$ARTIFACT_DIR"/
+      - sed -i.bak -e "s|__RELEASE__|$USMS_RELEASE|g" "$ARTIFACT_DIR/index.html"
+      - rm -f "$ARTIFACT_DIR/index.html.bak"
+      - |
+        cat > "$ARTIFACT_DIR/build-metadata.json" << META
+        {
+          "service": "$SERVICE_NAME",
+          "release": "$USMS_RELEASE",
+          "builtAt": "$BUILT_AT",
+          "buildId": "${CODEBUILD_BUILD_ID:-local}"
+        }
+        META
+  post_build:
+    commands:
+      - ls -l "$ARTIFACT_DIR"
+      - cat "$ARTIFACT_DIR/build-metadata.json"
+
+artifacts:
+  base-directory: dist
+  files:
+    - '**/*'
