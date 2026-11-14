@@ -42,28 +42,28 @@ All 46 automated checks in `scripts/utilities/verify-lab-11.sh` passed (`PASS=46
 
 ### Phase 1: Environment Readiness, Support Probe, and Directory Scaffold (Steps 1–4)
 
-#### Step 1 — Start Floci and Verify Durable Storage
+#### Step 1 : Start Floci and Verify Durable Storage
 Floci was started via `./scripts/utilities/floci-up.sh` and verified using `floci-check.sh`. The container confirmed `FLOCI_STORAGE_MODE=hybrid` bound to `/home/namgaywangchuk/floci-data` and authenticated against local account `000000000000` in `us-east-1`.
 
 ![Step 1 — Starting Floci, verifying hybrid durable storage, and confirming local account identity](../../screenshots/lab-11/1.png)
 
 *Figure 1: Floci startup verification showing `FLOCI_STORAGE_MODE=hybrid`, bind-mounted host persistence directory, and `sts get-caller-identity` returning account `000000000000`.*
 
-#### Step 2 — Load Earlier-Lab Dependencies
+#### Step 2 : Load Earlier-Lab Dependencies
 Environment files `configs/lab-01.env` through `configs/lab-10.env` were sourced to confirm the upstream ECS deployment target (`usms-ecs-cluster`, service `usms-enrolment-svc`, container `enrolment-api`, ALB target group ARN, and ECS execution role ARN).
 
 ![Step 2 — Sourcing Lab 01 through Lab 10 environment configurations and verifying upstream ECS values](../../screenshots/lab-11/2.png)
 
 *Figure 2: Sourcing `configs/lab-01.env` through `configs/lab-10.env` and confirming active ECS cluster, service, container name (`enrolment-api`), target group ARN, and execution role ARN.*
 
-#### Step 3 — Probe CI/CD Service Support
+#### Step 3 : Probe CI/CD Service Support
 `scripts/utilities/cicd-support-probe.sh` was created and executed to verify API support for CodeBuild, CodePipeline, ECR, and CodeDeploy. Both `codebuild` and `codepipeline` responded cleanly, establishing **Path A**.
 
 ![Step 3 — Running cicd-support-probe.sh to confirm Path A CodeBuild and CodePipeline support](../../screenshots/lab-11/3.png)
 
 *Figure 3: Output of `cicd-support-probe.sh` confirming `PATH A -- CodeBuild and CodePipeline both present` and recording results to `outputs/lab-11-support-probe.txt`.*
 
-#### Step 4 — Create Directory Layout and Initialize Notes
+#### Step 4 : Create Directory Layout and Initialize Notes
 The Lab 11 workspace directories (`labs/lab-11-cicd/app/{src,config,tests}`, `policies`, `templates`, `scripts/{utilities,cleanup}`, `outputs`, and `notes`) were created and `notes/lab-11-notes.md` was initialized with the support probe output.
 
 ![Step 4 — Creating Lab 11 workspace directories and initializing notes/lab-11-notes.md](../../screenshots/lab-11/4.png)
@@ -74,14 +74,14 @@ The Lab 11 workspace directories (`labs/lab-11-cicd/app/{src,config,tests}`, `po
 
 ### Phase 2: Versioned S3 Artifact Store (Steps 5–6)
 
-#### Step 5 — Create and Configure `usms-pipeline-artifacts`
+#### Step 5 : Create and Configure `usms-pipeline-artifacts`
 The S3 bucket `usms-pipeline-artifacts` was created, tagged (`Project=USMS`, `Tier=pipeline`, `Lab=11`), configured with `Versioning=Enabled`, and locked down with all four S3 Public Access Block settings set to `true`.
 
 ![Step 5 — Creating usms-pipeline-artifacts with tagging, versioning enabled, and public access blocked](../../screenshots/lab-11/5.png)
 
 *Figure 5: Creation and verification of `usms-pipeline-artifacts` showing `GetBucketVersioning` (`Enabled`) and `GetBucketTagging` metadata.*
 
-#### Step 6 — Prove S3 Object Versioning and Clean Up Probe Objects
+#### Step 6 : Prove S3 Object Versioning and Clean Up Probe Objects
 Two consecutive uploads (`first` and `second`) were written to `probe/versioning.txt` to confirm distinct `VersionId` generation (`198f322f-...` as latest and `119b4858-...` as previous), followed by explicit deletion of every object version so zero probe artifacts remained.
 
 ![Step 6a — Uploading two versions to probe/versioning.txt and listing distinct S3 VersionIds](../../screenshots/lab-11/6.png)
@@ -96,14 +96,14 @@ Two consecutive uploads (`first` and `second`) were written to `probe/versioning
 
 ### Phase 3: Enrolment Application Source Tree and Buildspec (Steps 7–8)
 
-#### Step 7 — Author the Enrolment Application Tree and Smoke Tests
+#### Step 7 : Author the Enrolment Application Tree and Smoke Tests
 The enrolment service source files were authored under `labs/lab-11-cicd/app/`: `VERSION` (`r3`), `src/index.html` (with `__RELEASE__` and `__BUILT_AT__` placeholders), `src/healthz.html` (`ok`), `config/service.json` (`container: "enrolment-api"`, `port: 80`), and `tests/smoke.sh` (7 automated artifact assertions).
 
 ![Step 7 — Writing the enrolment service source tree, service configuration, and smoke test script](../../screenshots/lab-11/8.png)
 
 *Figure 8: Validation of `config/service.json` and `tests/smoke.sh` syntax (`syntax OK`) and listing of all five source files under `labs/lab-11-cicd/app`.*
 
-#### Step 8 — Author and Validate `buildspec.yml`
+#### Step 8 : Author and Validate `buildspec.yml`
 A CodeBuild `version: 0.2` specification (`labs/lab-11-cicd/app/buildspec.yml`) was created with four phases (`install`, `pre_build`, `build`, `post_build`) and `artifacts.base-directory: dist`, validated via PyYAML.
 
 ![Step 8 — Validating buildspec.yml syntax, four build phases, and dist artifact base-directory](../../screenshots/lab-11/9.png)
@@ -114,28 +114,28 @@ A CodeBuild `version: 0.2` specification (`labs/lab-11-cicd/app/buildspec.yml`) 
 
 ### Phase 4: Standalone CodeBuild Identity, Project, and Local Fallback Runner (Steps 9–14)
 
-#### Step 9 — Create `usms-codebuild-role` and `USMSCodeBuildBase`
+#### Step 9 : Create `usms-codebuild-role` and `USMSCodeBuildBase`
 The CodeBuild trust policy (`policies/trust-codebuild.json`) and least-privilege permissions policy (`policies/usms-codebuild-policy.json`) were created and attached to `usms-codebuild-role`.
 
 ![Step 9 — Creating usms-codebuild-role and attaching USMSCodeBuildBase policy](../../screenshots/lab-11/10.png)
 
 *Figure 10: Verification of `usms-codebuild-role` trust principal (`codebuild.amazonaws.com`) and attached `USMSCodeBuildBase` managed policy.*
 
-#### Step 10 — Create Standalone CodeBuild Project `usms-enrolment-build`
+#### Step 10 : Create Standalone CodeBuild Project `usms-enrolment-build`
 `templates/lab-11-codebuild-project.json` was authored and registered via `aws codebuild create-project`, configuring `aws/codebuild/standard:7.0`, `BUILD_GENERAL1_SMALL`, 15-minute timeout, and S3 source/artifact locations.
 
 ![Step 10 — Creating CodeBuild project usms-enrolment-build and verifying configuration via batch-get-projects](../../screenshots/lab-11/11.png)
 
 *Figure 11: `CreateProject` and `BatchGetProjects` tables confirming `usms-enrolment-build` with image `aws/codebuild/standard:7.0`, role `usms-codebuild-role`, and S3 source/artifact bindings.*
 
-#### Step 11 — Package Source Archive and Upload Initial Version (`r3`)
+#### Step 11 : Package Source Archive and Upload Initial Version (`r3`)
 `scripts/utilities/usms-pack-source.sh` packaged `labs/lab-11-cicd/app` with `buildspec.yml` at the archive root (9 entries), uploaded it to `s3://usms-pipeline-artifacts/source/usms-enrolment-src.zip` (`VersionId: dc149454-f1b0-4f04-9735-2c2dad75bf80`), and confirmed `outputs/` is git-ignored.
 
 ![Step 11 — Packaging usms-enrolment-src.zip with buildspec.yml at root and uploading version r3 to S3](../../screenshots/lab-11/12.png)
 
 *Figure 12: Archive listing showing `buildspec.yml` at zip root, uploaded S3 `VersionId` `dc149454-f1b0-4f04-9735-2c2dad75bf80`, and `.gitignore` verification for `outputs/`.*
 
-#### Steps 12–13 — Run Standalone Build and Diagnose Floci 2.0.1 Image Pull Issue
+#### Steps 12 & 13 : Run Standalone Build and Diagnose Floci 2.0.1 Image Pull Issue
 Triggering `usms-enrolment-build:1` progressed through `SUBMITTED`, `QUEUED`, `PROVISIONING`, and `DOWNLOAD_SOURCE` (`SUCCEEDED`) before terminating in `COMPLETED` (`FAILED` / `FAULT`). Inspecting `batch-get-builds` revealed the documented Floci 2.0.1 limitation: Docker cannot pull AWS's private ECR Public image `aws/codebuild/standard:7.0` (`Status 404: pull access denied for aws/codebuild/standard`).
 
 ![Step 12 — Triggering standalone build usms-enrolment-build:1 and polling build status transitions](../../screenshots/lab-11/13.png)
@@ -146,7 +146,7 @@ Triggering `usms-enrolment-build:1` progressed through `SUBMITTED`, `QUEUED`, `P
 
 *Figure 14: `BatchGetBuilds` phase breakdown showing `SUBMITTED`, `QUEUED`, `PROVISIONING`, and `DOWNLOAD_SOURCE` succeeding before `COMPLETED` failed on the `aws/codebuild/standard:7.0` image pull.*
 
-#### Step 14 — Execute Buildspec Locally via `usms-buildspec-run.sh`
+#### Step 14 : Execute Buildspec Locally via `usms-buildspec-run.sh`
 To verify the build commands and smoke tests directly on the host, `scripts/utilities/usms-buildspec-run.sh` parsed `buildspec.yml` and executed all four phases, stamping `release=r3`, passing all 7 smoke tests (`smoke tests failed: 0`), and confirming `dist/` is git-ignored.
 
 ![Step 14 — Executing usms-buildspec-run.sh locally for release r3 and passing all 7 smoke tests](../../screenshots/lab-11/15.png)
@@ -157,35 +157,35 @@ To verify the build commands and smoke tests directly on the host, `scripts/util
 
 ### Phase 5: CodePipeline Identity, Two-Stage Pipeline, and End-to-End Runs (Steps 15–19)
 
-#### Step 15 — Create `usms-codepipeline-role` and `USMSCodePipelineBase`
+#### Step 15 : Create `usms-codepipeline-role` and `USMSCodePipelineBase`
 `policies/trust-codepipeline.json` and `policies/usms-codepipeline-policy.json` (scoping `iam:PassRole` strictly to `usms-codebuild-role` with `iam:PassedToService: codebuild.amazonaws.com`) were created and attached to `usms-codepipeline-role`.
 
 ![Step 15 — Creating usms-codepipeline-role and attaching USMSCodePipelineBase policy](../../screenshots/lab-11/16.png)
 
 *Figure 16: Policy validation and `GetPolicy` output confirming `USMSCodePipelineBase` (`v1`, `Attached: 1`) attached to `usms-codepipeline-role`.*
 
-#### Step 16 — Author and Validate Pipeline Template (`lab-11-pipeline.json`)
+#### Step 16 : Author and Validate Pipeline Template (`lab-11-pipeline.json`)
 `templates/lab-11-pipeline.json` was authored with two stages (`Source` using `S3` provider `FetchSource` $\rightarrow$ `Build` using `CodeBuild` provider `BuildArtifact`) and validated with zero unexpanded `$` variables.
 
 ![Step 16 — Validating templates/lab-11-pipeline.json JSON structure and absence of unexpanded variables](../../screenshots/lab-11/17.png)
 
 *Figure 17: JSON validation of `templates/lab-11-pipeline.json` confirming valid syntax and `0` unexpanded `$` tokens.*
 
-#### Step 17 — Create `usms-enrolment-pipeline` and Inspect Initial State
+#### Step 17 : Create `usms-enrolment-pipeline` and Inspect Initial State
 `aws codepipeline create-pipeline` created the 2-stage pipeline `usms-enrolment-pipeline` bound to `usms-codepipeline-role`.
 
 ![Step 17 — Creating two-stage CodePipeline usms-enrolment-pipeline and inspecting initial stage states](../../screenshots/lab-11/18.png)
 
 *Figure 18: `CreatePipeline` (`Stages: 2`) and `GetPipelineState` tables showing the `Source` (`FetchSource`) and `Build` (`BuildArtifact`) stages.*
 
-#### Step 18 — Hand Over CodeBuild Project to `CODEPIPELINE` and Test Override
+#### Step 18 : Hand Over CodeBuild Project to `CODEPIPELINE` and Test Override
 `aws codebuild update-project` switched `usms-enrolment-build` to `Source: CODEPIPELINE` and `Artifacts: CODEPIPELINE`. Both direct `start-build` (`usms-enrolment-build:2`, permitted by Floci's permissive validation) and `--source-type-override S3` (`usms-enrolment-build:3`) were tested and documented.
 
 ![Step 18 — Updating usms-enrolment-build to CODEPIPELINE source/artifacts and testing build overrides](../../screenshots/lab-11/19.png)
 
 *Figure 19: `UpdateProject` confirming `CODEPIPELINE` source and artifact types alongside standalone and `--source-type-override S3` build triggers.*
 
-#### Step 19 — Roll Forward Releases (`r4` and `r5`) Through the Pipeline
+#### Step 19 : Roll Forward Releases (`r4` and `r5`) Through the Pipeline
 `VERSION` was bumped to `r4`, repacked, uploaded (`VersionId: e27372af-6b56-44ce-be23-02eaba35c372`), and executed through `usms-enrolment-pipeline` (`09e499f9-36cb-489b-98ee-c71f7ed47eea`), followed by local verification of `r4` (`dist/build-metadata.json`). `VERSION` was then rolled forward to `r5` (`VersionId: 159ef677-fbdd-4955-9712-3b92286ec34c`), bringing total source versions to `3` while `BuildOutput` objects remained `0` due to the Floci 2.0.1 `standard:7.0` pull fault.
 
 ![Step 19a — Uploading release r4 source archive, listing S3 versions, and triggering pipeline execution](../../screenshots/lab-11/20.png)
@@ -204,7 +204,7 @@ To verify the build commands and smoke tests directly on the host, `scripts/util
 
 ### Phase 6: Deliberate Failure Diagnosis, State Recording, and Verification (Steps 20–21)
 
-#### Step 20 — Break `config/service.json` Deliberately, Diagnose, and Restore
+#### Step 20 : Break `config/service.json` Deliberately, Diagnose, and Restore
 `config/service.json` was modified to `"container": "enrolment-api-v2"`, repacked, uploaded (`e2a604e1-...`), and triggered (`a7310afd-e5e8-4f69-90d1-3e3a5bc8da90`). Both pipeline state inspection and `usms-buildspec-run.sh` isolated the failure to `pre_build` (`config/service.json names the wrong container`, exit status `1`). Restoring `"container": "enrolment-api"` returned the local build and pipeline upload (`3e0c7096-...`) to a passing state.
 
 ![Step 20a — Deliberately breaking config/service.json container name and diagnosing failure in pre_build](../../screenshots/lab-11/23.png)
@@ -215,7 +215,7 @@ To verify the build commands and smoke tests directly on the host, `scripts/util
 
 *Figure 24: Restoration of `"container": "enrolment-api"`, confirming `local build passes again` and triggering pipeline execution `76c1aa55-d9bd-4fb3-8ab7-b0a00ace3a49`.*
 
-#### Step 21 — Record Outputs (`configs/lab-11.env`) and Verify All 46 Checks
+#### Step 21 : Record Outputs (`configs/lab-11.env`) and Verify All 46 Checks
 All 26 environment exports were written to `configs/lab-11.env` with zero empty or `None` values, and `./scripts/utilities/verify-lab-11.sh` confirmed `PASS=46  FAIL=0`.
 
 ![Step 21 — Generating configs/lab-11.env with 26 populated exports and verifying sourced values](../../screenshots/lab-11/25.png)
