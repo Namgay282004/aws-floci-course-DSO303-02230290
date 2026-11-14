@@ -22,6 +22,8 @@ All 46 automated checks in `scripts/utilities/verify-lab-11.sh` passed (`PASS=46
 
 ## 2. Architecture & Resource Inventory
 
+![](../../screenshots/lab-11/aws-architecture-diagram.png)
+
 | Component | Identifier / Path | Key Configuration / Role |
 | :--- | :--- | :--- |
 | **Artifact Bucket** | `usms-pipeline-artifacts` | Versioning `Enabled`, Public Access Blocked (`All 4 flags true`), Tags: `Project=USMS`, `Tier=pipeline`, `Lab=11` |

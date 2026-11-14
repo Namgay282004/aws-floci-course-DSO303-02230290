@@ -23,6 +23,8 @@ This lab implements and validates an event-driven edge and regional serverless p
 
 The system separates synchronous **edge request-path processing** from asynchronous **regional post-upload processing**:
 
+![](../../screenshots/lab-10/aws-architecture-diagram.png)
+
 ```text
 STUDENT'S BROWSER
   GET /transcripts/2026/STU-00417.json
