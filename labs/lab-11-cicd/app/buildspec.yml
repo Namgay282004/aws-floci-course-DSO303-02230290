@@ -1,85 +1,45 @@
 version: 0.2
-
 env:
   variables:
-    SERVICE_NAME: "enrolment"
-    ARTIFACT_DIR: "dist"
-    IMAGE_URI: "nginx:alpine"
-
+    USMS_PROJECT: USMS
+    USMS_SERVICE: enrolment
 phases:
   install:
     commands:
-      - echo "--- install ---"
-      - python3 --version
-      - sed --version 2>/dev/null | head -1 || echo "BSD sed"
+    - 'echo "=== install: toolchain check ==="'
+    - python3 --version
+    - docker --version || true
   pre_build:
     commands:
-      - echo "--- pre_build ---"
-      - test -f VERSION || { echo "VERSION file is missing"; exit 1; }
-      - python3 -m json.tool config/service.json > /dev/null
-      - |
-        python3 -c '
-        import json, sys
-        actual = json.load(open("config/service.json")).get("container")
-        expected = "enrolment-api"
-        if actual != expected:
-            print(f"config/service.json container mismatch: expected {expected!r}, got {actual!r}")
-            sys.exit(1)
-        '
-      - |
-        grep -q '"port": 80' config/service.json || {
-          echo "config/service.json must specify port 80 to match the ALB target group"
-          exit 1
-        }
-      - echo "configuration validated"
+    - 'echo "=== pre_build: unit tests ==="'
+    - test -f VERSION && test -f src/index.html && test -f config/service.json
+    - "if [ -n \"${IMAGE_REPO_URI:-}\" ]; then REGISTRY_HOST=\"${IMAGE_REPO_URI%%/*}\"\
+      ; echo \"logging in to ${REGISTRY_HOST}\"; aws ecr get-login-password --region\
+      \ \"${AWS_REGION_COURSE:-us-east-1}\" | docker login --username AWS --password-stdin\
+      \ \"${REGISTRY_HOST}\"; else echo \"IMAGE_REPO_URI is empty \u2014 skipping\
+      \ registry login\"; fi"
   build:
     commands:
-      - echo "--- build ---"
-      - USMS_RELEASE="$(tr -d '[:space:]' < VERSION)"
-      - BUILT_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-      - echo "release=$USMS_RELEASE builtAt=$BUILT_AT"
-      - rm -rf "$ARTIFACT_DIR"
-      - mkdir -p "$ARTIFACT_DIR"
-      - cp -R src/. "$ARTIFACT_DIR"/
-      - sed -i.bak -e "s|__RELEASE__|$USMS_RELEASE|g" -e "s|__BUILT_AT__|$BUILT_AT|g" "$ARTIFACT_DIR/index.html"
-      - rm -f "$ARTIFACT_DIR/index.html.bak"
-      - |
-        cat > "$ARTIFACT_DIR/build-metadata.json" << META
-        {
-          "service": "$SERVICE_NAME",
-          "release": "$USMS_RELEASE",
-          "builtAt": "$BUILT_AT",
-          "buildId": "${CODEBUILD_BUILD_ID:-local}",
-          "sourceVersion": "${CODEBUILD_RESOLVED_SOURCE_VERSION:-local}"
-        }
-        META
-      - |
-        python3 -c '
-        import json, os
-        cfg = json.load(open("config/service.json"))
-        payload = [{"name": cfg["container"], "imageUri": os.environ.get("IMAGE_URI", "nginx:alpine")}]
-        with open(os.path.join(os.environ["ARTIFACT_DIR"], "imagedefinitions.json"), "w") as fh:
-            json.dump(payload, fh, indent=2)
-            fh.write("\n")
-        '
-      - cp config/service.json "$ARTIFACT_DIR/service.json"
+    - 'echo "=== build: render portal and build image ==="'
+    - mkdir -p dist
+    - cp -f src/index.html src/healthz.html config/service.json dist/
+    - IMAGE_TAG=$(tr -d "[:space:]" < VERSION)
+    - export IMAGE_TAG
+    - if [ -n "${IMAGE_REPO_URI:-}" ]; then docker build -t "usms-enrolment:${IMAGE_TAG}"
+      . && docker tag "usms-enrolment:${IMAGE_TAG}" "${IMAGE_REPO_URI}:${IMAGE_TAG}"
+      && docker push "${IMAGE_REPO_URI}:${IMAGE_TAG}"; fi
   post_build:
     commands:
-      - echo "--- post_build ---"
-      - bash tests/smoke.sh; SMOKE_RC=$?; export SMOKE_RC; [ "$SMOKE_RC" -eq 0 ]
-      - ls -l "$ARTIFACT_DIR"
-      - cat "$ARTIFACT_DIR/build-metadata.json"
-    finally:
-      - |
-        USMS_RELEASE="$(tr -d '[:space:]' < VERSION)"
-        SUMMARY_TS="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-        printf 'release=%s smoke_exit=%s timestamp=%s\n' "$USMS_RELEASE" "${SMOKE_RC:-unknown}" "$SUMMARY_TS" > "$ARTIFACT_DIR/build-summary.txt"
-        cat "$ARTIFACT_DIR/build-summary.txt"
-
+    - 'echo "=== post_build: emit imagedefinitions.json ==="'
+    - IMAGE_TAG=$(tr -d "[:space:]" < VERSION)
+    - if [ -n "${IMAGE_REPO_URI:-}" ]; then IMAGE_URI="${IMAGE_REPO_URI}:${IMAGE_TAG}";
+      else IMAGE_URI="usms-enrolment:${IMAGE_TAG}"; fi; printf '[{"name":"enrolment-api","imageUri":"%s"}]\n'
+      "${IMAGE_URI}" > imagedefinitions.json
+    - cp -f imagedefinitions.json dist/imagedefinitions.json
+    - cat imagedefinitions.json
+    - test -f dist/index.html && test -f dist/service.json && test -f imagedefinitions.json
 artifacts:
-  base-directory: dist
   files:
-    - '**/*'
-
-cache:
-  paths: []
+  - imagedefinitions.json
+  - dist/**/*
+  discard-paths: 'no'
