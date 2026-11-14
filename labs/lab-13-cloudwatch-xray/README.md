@@ -1,9 +1,5 @@
 # Lab 13 : CloudWatch, X-Ray & Observability: Engineering Lab Report
 
-**Environment:** Floci `2.0.1` (`http://localhost:4566`, `FLOCI_STORAGE_MODE=hybrid`, Account `000000000000`, Region `us-east-1`)
-
----
-
 ## 1. Executive Summary
 
 This lab established unified observability across the University Student Management System (USMS) serverless and container workload stack without altering functional business logic. Using Amazon CloudWatch Logs, CloudWatch Metrics, CloudWatch Alarms, IAM least-privilege policies, Lambda versioning/aliases, and AWS X-Ray segment structures on Floci `2.0.1`, the pipeline was instrumented across all three telemetry pillars (logs, metrics, and traces) and verified to survive a full container restart under durable `hybrid` persistence.

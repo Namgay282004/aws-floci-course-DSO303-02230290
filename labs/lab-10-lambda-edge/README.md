@@ -1,11 +1,5 @@
 # Lab 10: Edge Functions with AWS Lambda
 
-**Account / Endpoint:** `000000000000` (`http://localhost:4566`, `us-east-1`)  
-**Storage Mode:** `FLOCI_STORAGE_MODE=hybrid` (`/home/namgaywangchuk/floci-data`)  
-**Verification Result:** `PASS=51 FAIL=0`  
-
----
-
 ## 1. Executive Summary & Objectives
 
 This lab implements and validates an event-driven edge and regional serverless pipeline for the University Student Management System (USMS) transcript delivery service. Specifically, this implementation accomplishes five architectural objectives:

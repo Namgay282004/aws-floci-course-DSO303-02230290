@@ -1,10 +1,4 @@
 # Lab 11: CI/CD (Source, Build, and the Pipeline That Joins Them)
- 
-**Target Location:** `labs/lab-11-cicd/README.md`  
-**Environment:** Floci (`http://localhost:4566`, `FLOCI_STORAGE_MODE=hybrid`, Account `000000000000`, Region `us-east-1`)  
-**Support Path:** Path A (CodeBuild and CodePipeline APIs both present)  
-
----
 
 ## 1. Executive Summary
 
